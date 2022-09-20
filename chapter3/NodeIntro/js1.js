@@ -25,7 +25,7 @@ ourApp.post("/answer", (req, res) => {
     res.send(`<h3> congratulations! </h3>
     <a href="/">Back to home page</a>`);
   } else {
-    res.send(`<p> Sorry you are wrong </p>
+    res.send(`<h3> Sorry you are wrong </h3>
     <a href="/">Back to home page</a> `);
   }
 });
