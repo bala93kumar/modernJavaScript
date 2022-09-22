@@ -1,8 +1,26 @@
 let express = require("express");
-
 let app = express();
 
 app.use(express.urlencoded({ extended: false }));
+
+// old code
+
+//to connect to mongoDb
+
+let { MongoClient } = require("mongodb");
+let db;
+
+async function go() {
+  let client = new MongoClient(
+    `mongodb+srv://bala93kumar:pass@cluster0.sibmaoa.mongodb.net/toDoApp?retryWrites=true&w=majority`
+  );
+  await client.connect();
+  db = client.db;
+  app.listen(3000);
+}
+go();
+
+//new code form mongoDb
 
 app.get("/", (req, res) => {
   //   res.send("hello welcome to our app");
@@ -10,8 +28,11 @@ app.get("/", (req, res) => {
 });
 
 app.post("/toDo", (req, res) => {
-  res.send("toDo received");
+  db.collection("items").insertOne(
+    { text: req.body.items },
+    function (req, res) {
+      res.send("toDo received");
+    }
+  );
   console.log(req.body.items);
 });
-
-app.listen(3000);
