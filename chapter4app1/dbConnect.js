@@ -13,9 +13,9 @@ async function main() {
    * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
    */
   const uri =
-    "mongodb+srv://bala93kumar:pass@cluster0.sibmaoa.mongodb.net/toDoApp?retryWrites=true&w=majority";
+    "mongodb+srv://bala93kumar:password@cluster0.sibmaoa.mongodb.net/test?retryWrites=true&w=majority";
 
-  const client = new MongoClient(uri);
+  const client = new MongoClient(uri, { useUnifiedTopology: true });
 
   try {
     // Connect to the MongoDB cluster
