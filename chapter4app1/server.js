@@ -5,9 +5,7 @@ const mongoose = require("mongoose");
 
 app.use(express.urlencoded({ extended: false }));
 
-const dbUrl =
-  "mongodb+srv://bala93kumar:pass@cluster0.sibmaoa.mongodb.net/toDoApp?retryWrites=true&w=majority";
-
+const dbUrl = "";
 const connectionParams = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
