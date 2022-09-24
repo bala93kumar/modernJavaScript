@@ -1,6 +1,9 @@
 let express = require("express");
 let app = express();
 
+const ejs = require("ejs");
+app.set("view engine", "ejs");
+
 require("dotenv").config();
 
 const mongoose = require("mongoose");
@@ -64,21 +67,19 @@ const dataModel = mongoose.model("Items", dataModelSchema);
 
 app.get("/", (req, res) => {
   //   res.send("hello welcome to our app");
+  // actual working code to extract data from db and print in console
+
   dataModel.find({}, { itemList: 1, _id: 0 }, (err, data) => {
     if (err) {
       console.log(err);
     } else {
-      console.log(data);
+      // console.log(data);
+      res.render("index", { title: "To-Do App!!", records: data });
     }
   });
-  // dataModel.find((err, docs) => {
-  //   if (!err) {
-  //     console.log(Items);
-  //   } else {
-  //     console.log("failed to connect" + err);
-  //   }
-  // });
-  res.sendFile("index.html", { root: __dirname });
+
+  // res.sendFile("index.html", { root: __dirname });
+  // res.render("index", { title: "To-Do App!!" , records : data});
 });
 
 app.post("/toDo", (req, res) => {
