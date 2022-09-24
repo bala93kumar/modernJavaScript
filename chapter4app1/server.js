@@ -1,29 +1,47 @@
 let express = require("express");
 let app = express();
 
+require("dotenv").config();
+
 const mongoose = require("mongoose");
 
 app.use(express.urlencoded({ extended: false }));
 
-const dbUrl = "";
+var dbUrl = `mongodb+srv://${process.env.NAME}:${process.env.PASSWORD}@cluster0.sibmaoa.mongodb.net/toDoApp?retryWrites=true&w=majority`;
+
 const connectionParams = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 };
 
-mongoose
-  .connect(dbUrl, connectionParams)
-  .then(() => {
-    console.info("connected to the DB");
-  })
-  .catch((e) => {
-    console.log("error:", e);
-  });
+const connectDB = async () => {
+  try {
+    await mongoose.connect(dbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log("connected to DB");
+  } catch (err) {
+    console.log("failed to connect to DB", err);
+  }
+};
+
+connectDB();
+
+// new code to connect to mongodb
+
+// await mongoose
+//   .connect(dbUrl, connectionParams)
+//   .then(() => {
+//     console.info("connected to the DB");
+//   })
+//   .catch((e) => {
+//     console.log("error:", e);
+//   });
 
 // old code
-
 //to connect to mongoDb
-
 // let { MongoClient } = require("mongodb");
 // let db;
 
@@ -57,7 +75,7 @@ app.post("/toDo", (req, res) => {
 
   const dataModel = mongoose.model("Items", dataModelSchema);
 
-  var dataModel1 = new dataModel({ itemList: "buy apples" });
+  var dataModel1 = new dataModel({ itemList: req.body.items });
   // dataModel1.itemList = "buy apples";
   console.log(req.body.items);
   dataModel1.save((err, data) => {
