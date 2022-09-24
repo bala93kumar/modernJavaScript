@@ -29,6 +29,11 @@ const connectDB = async () => {
 
 connectDB();
 
+const dataModelSchema = new mongoose.Schema({
+  itemList: { type: String, required: true, trim: true },
+});
+const dataModel = mongoose.model("Items", dataModelSchema);
+
 // new code to connect to mongodb
 
 // await mongoose
@@ -59,6 +64,20 @@ connectDB();
 
 app.get("/", (req, res) => {
   //   res.send("hello welcome to our app");
+  dataModel.find({}, { itemList: 1, _id: 0 }, (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(data);
+    }
+  });
+  // dataModel.find((err, docs) => {
+  //   if (!err) {
+  //     console.log(Items);
+  //   } else {
+  //     console.log("failed to connect" + err);
+  //   }
+  // });
   res.sendFile("index.html", { root: __dirname });
 });
 
@@ -69,20 +88,16 @@ app.post("/toDo", (req, res) => {
   //     res.send("toDo received");
   //   }
   // );
-  const dataModelSchema = new mongoose.Schema({
-    itemList: { type: String, required: true, trim: true },
-  });
-
-  const dataModel = mongoose.model("Items", dataModelSchema);
 
   var dataModel1 = new dataModel({ itemList: req.body.items });
   // dataModel1.itemList = "buy apples";
-  console.log(req.body.items);
+  // console.log(req.body.items);
   dataModel1.save((err, data) => {
     if (err) {
       console.error(err);
     } else {
-      res.status(200).send({ msg: "inserted" });
+      // res.status(200).send({ msg: "inserted" });
+      res.redirect("/");
     }
   });
 });
